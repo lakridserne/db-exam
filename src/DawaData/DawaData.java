@@ -196,8 +196,6 @@ public class DawaData {
         this._status = _status;
     }
 
-
-
     public String get_id() {
         return _id;
     }
