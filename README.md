@@ -1,4 +1,4 @@
-# db-exam
+# DB Exam
 Database exam
 
 Created by
