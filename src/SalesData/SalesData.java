@@ -1,4 +1,6 @@
 package SalesData;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
@@ -107,22 +109,33 @@ public class SalesData {
         this._price_change_in_pct = _price_change_in_pct;
     }
 
-
-
-
-    public static void main(String[] args) {
+    public void connect() {
         // Creating a Mongo client
         MongoClient mongo = new MongoClient( "localhost" , 27017 );
 
         // Creating Credentials
         MongoCredential credential;
-        credential = MongoCredential.createCredential("sampleUser", "myDb",
+        credential = MongoCredential.createCredential("sampleUser", "house_qoutes",
                 "password".toCharArray());
         System.out.println("Connected to the database successfully");
 
         // Accessing the database
-        MongoDatabase database = mongo.getDatabase("myDb");
+        MongoDatabase database = mongo.getDatabase("house_qoutes");
         System.out.println("Credentials ::"+ credential);
 
+    }
+
+    // qurries
+    //
+    //
+    // hente alle priser indenfor et bestemt postnummer
+    public int[] getAveragePricesInZip(String address, String zipcode) {
+        connect();
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("address", address);
+        DBCursor cursor = collection.find(whereQuery);
+        while(cursor.hasNext()) {
+            System.out.println(cursor.next());
+        }
     }
 }

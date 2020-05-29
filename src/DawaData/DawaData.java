@@ -1,6 +1,14 @@
 package DawaData;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
 
 public class DawaData {
 
@@ -26,6 +34,14 @@ public class DawaData {
     private  int _brofast;
     private  String _storkredsnavn;
     private  String _landsdelsnavn;
+
+
+    private final String url = "jdbc:postgresql://house-quotes.ctyfhtkfzvw5.eu-north-1.rds.amazonaws.com/house_quotes";
+    private final String user = "postgres";
+    private final String password = "abcd1234";
+
+
+
 
     public String get_landsdelsnavn() {
         return _landsdelsnavn;
@@ -204,7 +220,55 @@ public class DawaData {
         this._id = _id;
     }
 
+
+
+
+    public Connection connect() throws SQLException {
+        return DriverManager.getConnection(url, user, password);
+    }
+
+    private void displayDawaData(ResultSet rs) throws SQLException {
+        while (rs.next()) {
+            System.out.println(rs.getInt("count"));
+        }
+    }
+
+    public  boolean getDawaDataRecords(String vejnavn, String husnr, Integer postnr, String postnrnavn){
+        return getDawaDataRecords(vejnavn, husnr, null, null, postnr, postnrnavn);
+    }
+
+    public boolean getDawaDataRecords(String vejnavn, String husnr, String etage,  String dørnr, Integer postnr, String postnrnavn) {
+        String SQL = "";
+
+        if(etage == null) {
+
+             SQL = "SELECT COUNT(*) FROM house_quotes where vejnavn ='"+vejnavn+"' and husnr = '"+husnr+"' and postnr = '"+postnr+"' and postnrnavn = '"+postnrnavn+"'";
+        } else {
+
+            SQL = "SELECT COUNT(*) FROM house_quotes where vejnavn = '"+vejnavn+"' and husnr = '"+husnr+"' and etage = '"+postnr+"' and dr = '"+dørnr+"' and postnr = '"+postnr+"' and postnrnavn = '"+postnrnavn+"'";
+        }
+
+        int count = 0;
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(SQL)) {
+            // display actor information
+            rs.next();
+            count = rs.getInt(("count"));
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return count == 1;
+    }
+
+
+
     public static void main(String args[] ){
+
+        Scanner s = new Scanner(System.in);
+        String string = s.nextLine();
         Connection c = null;
         try {
             Class.forName("org.postgresql.Driver");
@@ -217,5 +281,7 @@ public class DawaData {
             System.exit(0);
         }
         System.out.println("Opened database successfully");
+
+
     }
 }

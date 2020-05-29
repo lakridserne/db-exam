@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 public class PriceEstimate {
 
     private  int _price;
+    private String _address_id;
+    private LocalDateTime _date;
+    private int _sqm;
 
     public int get_price() {
         return _price;
@@ -40,9 +43,7 @@ public class PriceEstimate {
         this._sqm = _sqm;
     }
 
-    private String _address_id;
-    private LocalDateTime _date;
-    private int _sqm;
+
 
 
     public static void main(String[] args) {
