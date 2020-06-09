@@ -1,11 +1,15 @@
 package SalesData;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
+import com.mongodb.client.model.Projections;
 
 import java.sql.Date;
+
+import static com.mongodb.client.model.Projections.*;
 
 public class SalesData {
 
@@ -20,6 +24,8 @@ public class SalesData {
     private int _size_in_sqm;
     private int _year_of_construction;
     private int _price_change_in_pct;
+
+    private MongoClient mongo;
 
     public String get_address() {
         return _address;
@@ -111,7 +117,7 @@ public class SalesData {
 
     public void connect() {
         // Creating a Mongo client
-        MongoClient mongo = new MongoClient( "localhost" , 27017 );
+        this.mongo = new MongoClient( "localhost" , 27017 );
 
         // Creating Credentials
         MongoCredential credential;
@@ -120,7 +126,7 @@ public class SalesData {
         System.out.println("Connected to the database successfully");
 
         // Accessing the database
-        MongoDatabase database = mongo.getDatabase("house_qoutes");
+        MongoDatabase database = this.mongo.getDatabase("house_qoutes");
         System.out.println("Credentials ::"+ credential);
 
     }
@@ -129,13 +135,13 @@ public class SalesData {
     //
     //
     // hente alle priser indenfor et bestemt postnummer
-    public int[] getAveragePricesInZip(String address, String zipcode) {
+    /*public int[] getAveragePricesInZip(String address, String zipcode) {
         connect();
         BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("address", address);
-        DBCursor cursor = collection.find(whereQuery);
+        whereQuery.put("zipcode", zipcode);
+        DBCursor cursor = collection.find(whereQuery).projection(fields(include("price")));
         while(cursor.hasNext()) {
             System.out.println(cursor.next());
         }
-    }
+    }*/
 }

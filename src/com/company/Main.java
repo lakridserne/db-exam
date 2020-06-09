@@ -15,14 +15,17 @@ public class Main {
         Integer postNummer = 4100;
         String postNummerNavn = "Ringsted";
         DawaData dw = new DawaData();
+        String address = "";
         boolean correctAddress = dw.getDawaDataRecords(vejnavn, husNummer, postNummer, postNummerNavn);
         if (correctAddress == true){
             if(etage == null) {
-                String address = vejnavn + " " + husNummer;
+                address = vejnavn + " " + husNummer;
             } else {
-                String address = vejnavn + " " + husNummer + ", " + etage + ", " + door;
+                address = vejnavn + " " + husNummer + ", " + etage + ", " + door;
             }
             String zipcode = postNummer + " " + postNummerNavn;
+            String fullAddress = address + ", " + zipcode;
+            System.out.println(fullAddress);
         }
     }
 }
