@@ -25,7 +25,7 @@ public class SalesData {
     private int _year_of_construction;
     private int _price_change_in_pct;
 
-    private MongoClient mongo;
+    private static MongoClient mongo;
 
     public String get_address() {
         return _address;
@@ -115,9 +115,9 @@ public class SalesData {
         this._price_change_in_pct = _price_change_in_pct;
     }
 
-    public void connect() {
+    public static void connect() {
         // Creating a Mongo client
-        this.mongo = new MongoClient( "localhost" , 27017 );
+        SalesData.mongo = new MongoClient( "localhost" , 27017 );
 
         // Creating Credentials
         MongoCredential credential;
@@ -126,22 +126,30 @@ public class SalesData {
         System.out.println("Connected to the database successfully");
 
         // Accessing the database
-        MongoDatabase database = this.mongo.getDatabase("house_qoutes");
+        MongoDatabase database = SalesData.mongo.getDatabase("house_qoutes");
         System.out.println("Credentials ::"+ credential);
-
+        System.out.println(database.listCollections());
     }
 
     // qurries
     //
     //
     // hente alle priser indenfor et bestemt postnummer
-    /*public int[] getAveragePricesInZip(String address, String zipcode) {
+    public static int[] getAveragePricesInZip(String address, String zipcode) {
         connect();
         BasicDBObject whereQuery = new BasicDBObject();
         whereQuery.put("zipcode", zipcode);
-        DBCursor cursor = collection.find(whereQuery).projection(fields(include("price")));
+        /*DBCursor cursor = collection.find(eq("zipcode", zipcode)).projection(fields(include("price"), excludeId()));
         while(cursor.hasNext()) {
             System.out.println(cursor.next());
-        }
-    }*/
+        }*/
+        int[] prices = new int[2];
+        prices[0] = 10;
+        prices[1] = 4;
+        return prices;
+    }
+
+    public static void main(String[] args) {
+        getAveragePricesInZip("Mellem Broerne 2", "4100 Ringsted");
+    }
 }

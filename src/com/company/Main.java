@@ -16,7 +16,12 @@ public class Main {
         String postNummerNavn = "Ringsted";
         DawaData dw = new DawaData();
         String address = "";
-        boolean correctAddress = dw.getDawaDataRecords(vejnavn, husNummer, postNummer, postNummerNavn);
+        boolean correctAddress = false;
+        if(etage == null) {
+            correctAddress = dw.getDawaDataRecords(vejnavn, husNummer, postNummer, postNummerNavn);
+        } else {
+            correctAddress = dw.getDawaDataRecords(vejnavn, husNummer, etage, husNummer, postNummer, postNummerNavn);
+        }
         if (correctAddress == true){
             if(etage == null) {
                 address = vejnavn + " " + husNummer;
